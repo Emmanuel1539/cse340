@@ -37,7 +37,7 @@ Util.buildClassificationGrid = async function(data){
     if(data.length > 0){
       grid = '<ul id="inv-display">'
       data.forEach(vehicle => { 
-        grid += '<li>'
+        grid += '<li>' 
         grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
         + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
         + 'details"><img src="' + vehicle.inv_thumbnail 
@@ -62,6 +62,39 @@ Util.buildClassificationGrid = async function(data){
     return grid
   }
 
+  Util.buildVehicleDetailGrid = function(data) {
+    const price = `$${data.inv_price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
+    const mileage = `${data.inv_miles.toLocaleString('en-US')} miles`;
+
+    const gridHTML = `
+        <div class="vehicle-detail-container">
+            <img src="${data.inv_image_full}" alt="Full image of ${data.inv_make} ${data.inv_model}">
+            <div class="vehicle-info">
+              <div class="vehicle-header">
+                  <span>${data.inv_year} ${data.inv_make} ${data.inv_model} ${price}</span>
+              </div>
+              <div class="detail-wrapper">
+                  <div class="vehicle-detail-content">
+                    <p>Price: ${price}</p>
+                    <p>Mileage: ${mileage}</p>
+                    <p>Color: ${data.inv_color}</p>
+                    <p>Transmission: ${data.inv_transmission}</p>
+                    <p>Fuel Type: ${data.inv_fuel_type}</p>
+                  </div>
+
+                  <div class="description">
+                    <p>Description: ${data.inv_description}</p>
+                  </div>
+              </div>
+            </div>
+        </div>
+    `;
+
+    return gridHTML;
+};
+
+
+  
   /* ***********************
  * Middleware for handling errors
 * Wrap other function in this for general error handling
