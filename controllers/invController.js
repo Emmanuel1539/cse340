@@ -26,6 +26,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
     let inventoryId = req.params.inventoryId;
     try {
         let data = await invModel.getVehicleByInventoryId(inventoryId); 
+        
         let gridHTML = utilities.buildVehicleDetailGrid(data); 
         let nav = await utilities.getNav();
         

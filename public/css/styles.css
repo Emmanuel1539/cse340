@@ -166,6 +166,36 @@ nav ul li{
   padding: 20px;
 }
 
+
+.vehicle-detail-container{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.vehicle-info{
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+.detail-wrapper{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.vehicle-detail-content{
+  display: block;
+  width: 60%;
+  padding: 10px 0;
+}
+
+.description{
+  width: 40px;
+  padding: 10px 0;
+}
+
 @media screen and (max-width: 600px) {
   .section__delorean{
     display: flex;

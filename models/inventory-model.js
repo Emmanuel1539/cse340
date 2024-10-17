@@ -30,7 +30,7 @@ async function getVehicleByInventoryId(inventory_id){
             `SELECT * FROM public.inventory AS i
             JOIN public.classification AS c
             ON i.classification_id = c.classification_id
-            WHERE i.inventory_id = $1`, [inventory_id]
+            WHERE i.inv_id = $1`, [inventory_id]
         )
         return data.rows[0]  // to get a single row
     } catch (error){
