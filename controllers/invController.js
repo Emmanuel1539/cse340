@@ -19,7 +19,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
         grid,
     })
 
-
+}
 
 // Build vehicle details view by inventory id
 invCont.buildByInventoryId = async function (req, res, next) {
@@ -40,7 +40,4 @@ invCont.buildByInventoryId = async function (req, res, next) {
 };
 
 
-
-
-}
 module.exports = invCont;
