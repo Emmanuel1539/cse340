@@ -65,7 +65,7 @@ Util.buildClassificationGrid = async function(data){
   
 
   Util.buildVehicleDetailGrid = function(data) {
-    const price = `$${Number(data.inv_price).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
+    const price = `${Number(data.inv_price).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
     const mileage = `${Number(data.inv_miles).toLocaleString('en-US')} miles`;
 
     const gridHTML = `
