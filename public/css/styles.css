@@ -197,6 +197,14 @@ nav ul li{
   padding: 10px 0;
 }
 
+.mileage-price{
+  display: flex;
+  justify-content: space-between;
+  background-color: aquamarine;
+  font-size: 20px;
+  padding: 5px;
+  font-weight: bolder;
+}
 .description{
   width: 50%;
   padding: 10px 0;

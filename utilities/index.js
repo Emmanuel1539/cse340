@@ -75,6 +75,7 @@ Util.buildClassificationGrid = async function(data){
                 <div class="vehicle-header">
                     <span>${data.inv_year} ${data.inv_make} ${data.inv_model} - ${price}</span>
                 </div>
+                <span class="mileage-price"><p>Mileage: ${mileage}</p> <p>Price: ${price}</p></span>
                 <div class="detail-wrapper">
                     <div class="vehicle-detail-content">
                         <p>Price: ${price}</p>
