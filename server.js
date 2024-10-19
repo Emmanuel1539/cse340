@@ -44,21 +44,17 @@ app.use((req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' })
 })
 
-/* ***********************
- * General Error Handling Middleware (For all other routes)
- *************************/
-
 
   /*************************
  * General Error Handling Middleware (For all other routes)
  *************************/
   app.use(async (err, req, res, next) => {
   
-    const nav = await utilities.getNav(); // Fetch the navigation for all views
+    let nav = await utilities.getNav(); 
     console.error(`Error at: "${req.originalUrl}": ${err.message}`);
 
     if(err.status == 404){message = err.message}
-    else{message = 'Oh no!, There was a crash. Maybe try a different route?'}
+    else{ message = 'Oh no!, There was a crash. Maybe try a different route?'}
     res.render('errors/error'), {
       title: err.status || 'Server Error',
       message: err.message,
@@ -73,7 +69,7 @@ app.use((req, res, next) => {
 app.use( async (err, req, res, next) => {
   if (err.status === 500) {
     try {
-      const nav = await utilities.getNav(); // Ensure 'nav' is available for the view
+      let nav = await utilities.getNav(); // Ensure 'nav' is available for the view
       console.log('500 error middleware reached');
       res.status(500).render('errors/causeError', {
         title: '500 - Server Error',
@@ -86,15 +82,6 @@ app.use( async (err, req, res, next) => {
   } else {
     next(err); }
 });
-  
-
-
-
-
-
-
-
-
 
 
 /* ***********************
