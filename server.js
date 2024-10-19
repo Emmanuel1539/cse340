@@ -13,6 +13,7 @@ const static = require("./routes/static")
 const baseController = require('./controllers/baseController')
 const inventoryRoute = require('./routes/inventoryRoute')
 const utilities = require('./utilities')
+const causeError = require('./routes/errorRoute')
 
 
 /* ***********************
@@ -31,29 +32,69 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes - Unit 3, activities
 app.use('/inv', inventoryRoute)
+// Error route (causing intentional 500 errors)
+app.use('/causeError', causeError)
+
 
 
 /* ***********************
- * File not found - must be last route in this list
-* Basic Error Handling Activities
+ * 404 Error Middleware (file not found)
  *************************/
-app.use(async (req, res, next) =>{
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+app.use((req, res, next) => {
+  next({ status: 404, message: 'Sorry, we appear to have lost that page.' })
 })
 
 /* ***********************
- * Express Error Handler
+ * General Error Handling Middleware (For all other routes)
  *************************/
-app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){message = err.message}else{message = 'Oh no! There was a crash. Try a different route?'}
-  res.render('errors/error', {
-    title: err.status || 'Server Error',
-    message,
-    nav
+
+
+  /*************************
+ * General Error Handling Middleware (For all other routes)
+ *************************/
+  app.use(async (err, req, res, next) => {
+  
+    const nav = await utilities.getNav(); // Fetch the navigation for all views
+    console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+
+    if(err.status == 404){message = err.message}
+    else{message = 'Oh no!, There was a crash. Maybe try a different route?'}
+    res.render('errors/error'), {
+      title: err.status || 'Server Error',
+      message: err.message,
+      nav
+    };
   })
-})
+
+
+/* ***********************
+ * Cause-error middleware (For specific custom 500 errors on /causeError)
+ *************************/
+app.use( async (err, req, res, next) => {
+  if (err.status === 500) {
+    try {
+      const nav = await utilities.getNav(); // Ensure 'nav' is available for the view
+      console.log('500 error middleware reached');
+      res.status(500).render('errors/causeError', {
+        title: '500 - Server Error',
+        errorMessage: err.message,
+        nav
+      });
+    } catch (error) {
+      next(error); 
+    }
+  } else {
+    next(err); }
+});
+  
+
+
+
+
+
+
+
+
 
 
 /* ***********************
