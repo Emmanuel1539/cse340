@@ -9,6 +9,7 @@ const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
+const bodyParser = require('body-parser')
 
 
 const static = require("./routes/static")
@@ -41,6 +42,10 @@ app.use(session({
   saveUninitialized: true,
   name: 'sessionId',
 }))
+
+// account middlewares
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 
 // Express messages middlewares
