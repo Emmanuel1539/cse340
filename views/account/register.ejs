@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- title %></title>
+</head>
+<body>
+    <div class="form__container">
+        <h1><%- title %></h1>
+        <%- messages() %>
+    
+        <form action="/account" method="POST">
+            <label for="firstname">First name</label>
+            <input type="text" name="firstname" id="firstname" required>
+    
+            <label for="lastname">Last name</label>
+            <input type="text" name="lastname" id="lastname" required>
+            
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" required>
+    
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+    
+            <button type="submit">Register</button>
+    
+        </form>
+    </div>
+</body>
+</html>
