@@ -9,20 +9,28 @@
     <div class="form__container">
         <h1><%- title %></h1>
         <%- messages() %>
+        <!-- error messages -->
+        <% if (errors) { %>
+         <ul class="notice">
+            <% errors.forEach(error => { %>
+             <li><%= error.msg %></li>
+            <% }) %>
+         </ul>
+        <% } %>
     
         <form action="/account/register" method="POST">
             <label for="firstname">First name</label>
-            <input type="text" name="account_firstname" id="firstname" required>
+            <input type="text" name="account_firstname" id="firstname" >
     
             <label for="lastname">Last name</label>
-            <input type="text" name="account_lastname" id="lastname" required>
+            <input type="text" name="account_lastname" id="lastname" >
             
             <label for="email">Email</label>
-            <input type="email" name="account_email" id="email" required placeholder="Enter a valid email">
+            <input type="email" name="account_email" id="email" placeholder="Enter a valid email">
     
             <label for="password">Password</label>
             <span class="password_cond">Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
-            <input type="password" name="account_password" id="password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$">
+            <!-- <input type="password" name="account_password" id="password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$"> -->
             
             <button type="submit">Register</button>
     
