@@ -25,8 +25,6 @@ validate.registrationRules = () => {
         // email is required and must be strong
         body('account_email')
             .trim()
-            .escape()
-            .notEmpty()
             .isEmail()
             .normalizeEmail()
             .withMessage('A valid email is rquired.'),
@@ -56,7 +54,7 @@ validate.checkRegData = async(req, res, next) => {
     if(!errors.isEmpty()){
         let nav = await utilities.getNav()
         res.render('account/register', {
-            errors: errors.array(),
+            errors,
             title: 'Registration',
             nav, 
             account_firstname,

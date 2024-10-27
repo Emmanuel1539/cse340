@@ -13,7 +13,7 @@ router.get('/register', utilities.handleErrors(accountController.buildRegister))
 // Route to post form 
 router.post(
     '/register',
-    regValidate.registrationRules,
+    regValidate.registrationRules(),
     regValidate.checkRegData,
     utilities.handleErrors(accountController.registerAccount))
 

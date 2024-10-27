@@ -14,7 +14,9 @@ const bodyParser = require('body-parser')
 
 const static = require("./routes/static")
 const baseController = require('./controllers/baseController')
+// inventory routes - unit 3 activies
 const inventoryRoute = require('./routes/inventoryRoute')
+// Account route
 const accountRoute = require('./routes/accountRoute')
 
 const utilities = require('./utilities')
@@ -58,13 +60,14 @@ app.use(function(req, res, next){
 /* ***********************
  * Routes
  *************************/
-//  Account route
-app.use('/account', accountRoute)
+
 app.use(static)
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes - Unit 3, activities
 app.use('/inv', inventoryRoute)
+//  Account route
+app.use('/account', accountRoute)
 // Error route (causing intentional 500 errors)
 app.use('/causeError', causeError)
 
