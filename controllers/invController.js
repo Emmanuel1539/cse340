@@ -60,7 +60,7 @@ invCont.buildAddClassificationView = async function (req, res, next) {
     try {
         let nav = await utilities.getNav();
         // Pass an empty string for classification_name when rendering the view
-        res.render('./inventory/addClassification', {
+        res.render('./inventory/add-classification', {
             title: "Add New Classification",
             nav,
             
