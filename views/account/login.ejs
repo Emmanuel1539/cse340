@@ -10,7 +10,7 @@
     <div class="form__container">
         <h1><%- title %></h1>
         <%- messages() %>
-        <form action="/account" method="POST">
+        <form id="loginForm" action="/account/login" method="POST" >
             <label for="email">Email</label>
             <input type="text" name="email" id="email" required>
     

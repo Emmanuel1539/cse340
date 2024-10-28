@@ -63,7 +63,7 @@ Util.buildClassificationGrid = async function(data){
   }
 
   
-
+// Build vehicle detail grid view
   Util.buildVehicleDetailGrid = function(data) {
     const price = `${Number(data.inv_price).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
     const mileage = `${Number(data.inv_miles).toLocaleString('en-US')} miles`;
@@ -94,6 +94,41 @@ Util.buildClassificationGrid = async function(data){
 
     return gridHTML;
 };
+
+
+// Existing function to build navigation
+Util.getNav = async function () {
+    let data = await invModel.getClassification();
+    let list = "<ul>";
+    list += '<li><a href="/" title="Home page">Home</a></li>';
+
+    data.rows.forEach((row) => {
+        list += "<li>";
+        list +=
+            `<a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">${row.classification_name}</a>`;
+        list += "</li>";
+    });
+
+    list += "</ul>"; 
+    return list;
+};
+
+/* **************************************
+* Build the inventory management view HTML
+* ************************************ */
+Util.buildManagementView = function() {
+    const managementHTML = `
+        <div class="management-container">
+            
+            <div class="management-links">
+                <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
+                <br>
+                <a href="/inv/add-item" class="btn btn-primary">Add New Inventory Item</a>
+            </div>
+        </div>
+    `;
+    return managementHTML;
+}
 
 
 
