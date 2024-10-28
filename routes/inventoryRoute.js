@@ -24,6 +24,8 @@ router.get('/add-inventory', utilities.handleErrors(invController.buildAddInvent
 router.post('/add-classification',
     validate.classificationRules(),
     validate.checkClassificationData,
-    utilities.handleErrors(invController.buildAddClassificationView))
+    utilities.handleErrors(invController.buildAddClassificationView),
+    invController.addClassification
+)
 
 module.exports = router;

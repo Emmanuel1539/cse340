@@ -10,7 +10,9 @@
         <h1><%- title %></h1>
         
 
-        <!-- Display error messages from validation -->
+        <% if (flashMessage) { %>
+            <p class="flash-message"><%= flashMessage %></p>
+        <% } %>
 <!-- Display error messages from validation -->
 <% if (errors && errors.length > 0) { %>
     <ul class="notice">
@@ -29,7 +31,7 @@
                 required 
                 pattern="^[a-zA-Z0-9]+$" 
                 title="Classification name cannot contain spaces or special characters" 
-                value="<%- classification_name || '' %>">
+                value="<%= locals.classification_name %>">
 
             <p class="form__direction">Note: Classification name cannot contain spaces or special characters.</p>
             
