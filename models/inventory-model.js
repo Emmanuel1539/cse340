@@ -39,12 +39,26 @@ async function getVehicleByInventoryId(inventory_id){
 }
 
 async function insertClassification(classification_name) {
-    const query = 'INSERT INTO classification (classification_name) VALUES ($1) RETURNING classification_id'
+   try {
+    const query = 'INSERT INTO classification (classification_name) VALUES ($1) RETURNING *'
     const result = await pool.query(query, [classification_name])
-    return result.rowCount > 0
+    return result
+   } catch (error) {
+    console.error('Inserting new classification' + error)
+   }
+}
+async function checkExistingClassifiactionName(classification_name) {
+   try {
+    const query = 'SELECT * FROM classification WHERE classification_name = $1'
+    const result = await pool.query(query, [classification_name])
+    return result.rowCount
+   } catch (error) {
+    return error.message
+   } 
 }
 
 module.exports = {getClassification, 
                 getInventoryByClassificationId, 
                 getVehicleByInventoryId,
-                insertClassification};
+                insertClassification,
+                checkExistingClassifiactionName};

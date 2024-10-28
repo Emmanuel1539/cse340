@@ -59,11 +59,12 @@ invCont.buildAddClassificationView = async function (req, res, next) {
     try {
         let nav = await utilities.getNav();
         // Pass an empty string for classification_name when rendering the view
+        
         res.render('./inventory/add-classification', {
             title: "Add New Classification",
             nav,
             errors: null,
-            flashMessage: req.flash('notice'),
+           
         });
     } catch (error) {
         console.error("Error rendering Add New Classification view:", error);
@@ -87,15 +88,17 @@ invCont.buildAddInventoryView = async function (req, res, next) {
 invCont.addClassification = async function (req, res, next) {
     const {classification_name} = req.body;
     try {
+        console.log(classification_name)
         const result = await invModel.insertClassification(classification_name);
-
+        
         if(result){
             req.flash('notice', 'Classification added successfully');
+        
             const nav = await utilities.getNav();
-            res.render('./inventory/management', {
-                title: 'Vehicle Management',
+            res.render('./inventory/add-classification', {
+                title: 'Add classification',
                 nav,
-                flashMessage: req.flash('notice')
+                errors: null,
             })
         } else{
             req.flash('notice', 'Could not add classification');
