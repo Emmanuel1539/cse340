@@ -58,18 +58,19 @@ invCont.buildManagementView = async function (req, res, next) {
 // Display the Add New Classification view
 invCont.buildAddClassificationView = async function (req, res, next) {
     try {
-        let nav = await utilities.getNav()
+        let nav = await utilities.getNav();
+        // Pass an empty string for classification_name when rendering the view
         res.render('./inventory/addClassification', {
             title: "Add New Classification",
             nav,
+            
             flashMessage: req.flash('notice'),
-        })
+        });
     } catch (error) {
-        console.error("Error rendering Add New Classification view:", error)
-        next(error)
+        console.error("Error rendering Add New Classification view:", error);
+        next(error);
     }
-}
-
+};
 // Display the Add New Inventory Item view
 invCont.buildAddInventoryView = async function (req, res, next) {
     try {

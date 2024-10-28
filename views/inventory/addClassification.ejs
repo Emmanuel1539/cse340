@@ -9,23 +9,16 @@
     <div class="form__container">
         <h1><%- title %></h1>
         
-        <!-- Display flash messages if available -->
-        <% if (messages && messages.info) { %>
-            <p class="info"><%= messages.info %></p>
-        <% } %>
-        <% if (messages && messages.error) { %>
-            <p class="error"><%= messages.error %></p>
-        <% } %>
 
         <!-- Display error messages from validation -->
-        <% if (errors && errors.array().length > 0) { %>
-            <ul class="notice">
-                <% errors.array().forEach(error => { %>
-                    <li><%= error.msg %></li>
-                <% }) %>
-            </ul>
-        <% } %>
-
+<!-- Display error messages from validation -->
+<% if (errors && errors.length > 0) { %>
+    <ul class="notice">
+        <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }); %> <!-- Ensure you have a closing tag here -->
+    </ul>
+<% } %> 
         <!-- Form to add new classification -->
         <form action="/inv/add-classification" method="POST">
             <label for="classification_name">Classification Name</label>

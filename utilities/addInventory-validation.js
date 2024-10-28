@@ -19,19 +19,20 @@ validate.classificationRules = () => {
 // Middleware to check for validation errors
 validate.checkClassificationData = async (req, res, next) => {
     const { classification_name } = req.body;
-    let errors = validationResult(req);
+    const errors = validationResult(req); // Get validation errors
 
+    // If there are validation errors, render the add-classification view with errors
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
-        res.render('inventory/add-classification', {
-            errors,
+        return res.render('./inventory/addClassification', {
+            errors: errors.array(), // Pass array of errors
             title: 'Add New Classification',
             nav,
-            classification_name,
+        
         });
-        return;
     }
 
+    // No validation errors, proceed to the next middleware
     next();
 };
 
