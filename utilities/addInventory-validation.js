@@ -24,10 +24,11 @@ validate.checkClassificationData = async (req, res, next) => {
     // If there are validation errors, render the add-classification view with errors
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
-        return res.render('./inventory/addClassification', {
+        return res.render('./inventory/add-classification', {
             errors: errors.array(), // Pass array of errors
             title: 'Add New Classification',
             nav,
+            classification_name,
         
         });
     }
