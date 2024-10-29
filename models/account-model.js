@@ -22,4 +22,15 @@ async function checkExistingEmail(account_email) {
     }
 }
 
+async function getAccountEmail(account_email) {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM account WHERE account_email = $1',
+            [account_email])
+            return result.rows[0]
+    } catch (error) {
+        return new Error('No matching email found')
+    }
+}
+
 module.exports = {registerAccount, checkExistingEmail}

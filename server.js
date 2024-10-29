@@ -23,6 +23,7 @@ const utilities = require('./utilities')
 const causeError = require('./routes/errorRoute')
 const session = require('express-session')
 const pool = require('./database')
+const cookieParser = require('cookie-parser')
 
 /* ***********************
  * Views Engine and Templates
@@ -48,7 +49,8 @@ app.use(session({
 // account middlewares
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-
+// cookie parser
+app.use(cookieParser)
 
 // Express messages middlewares
 app.use(require('connect-flash')())

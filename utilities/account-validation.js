@@ -75,5 +75,44 @@ validate.checkRegData = async(req, res, next) => {
     
 }
 
+// login rule
+validate.loginRules = () => {
+    return [
+        body('account_email')
+            .trim()
+            .isEmail()
+            .normalizeEmail()
+            .withMessage('A valid email is required.'),
+        
+        body('account_password')
+            .trim()
+            .notEmpty()
+            .isStrongPassword({
+                minLength: 12,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+            })
+            .withMessage('Password does not meet requirements.')
+    ]
+}
+
+validate.validateLoginData = async (req, res, next) => {
+    const { account_email } = req.body
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        res.render('account/login', {
+            errors: errors.array(), // Format errors for display
+            title: 'Login',
+            nav,
+            account_email, // Sticky input for email
+        })
+        return
+    }
+    next()
+}
 
 module.exports = validate
