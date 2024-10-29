@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const utilities = require('../utilities')
+const utilities = require('../utilities/')
 const regValidate = require('../utilities/account-validation')
 const accountController = require('../controllers/accountController')
 const validate = require('../utilities/addInventory-validation')
@@ -11,7 +11,7 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin))
 // Route to build regeration view
 router.get('/register', utilities.handleErrors(accountController.buildRegister))
 
-router.get('/', utilities.handleErrors(accountController.buildAccountManagement) )
+router.get('/', utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement) )
 // Route to post form 
 router.post(
     '/register',

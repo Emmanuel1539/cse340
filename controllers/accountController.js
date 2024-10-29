@@ -1,5 +1,5 @@
 // Deliver login
-const utilities = require('../utilities')
+const utilities = require('../utilities/')
 const accountModel = require('../models/account-model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -13,6 +13,7 @@ async function buildLogin(req, res, next) {
     res.render('account/login', {
         title: "Login",
         nav,
+        errors: null,
     })
 }
 
@@ -61,6 +62,7 @@ async function registerAccount(req, res) {
         res.status(201).render('account/login',{
             title: "Login",
             nav,
+            errors: null
         })
     } else{
         req.flash("notice", "Sorry, the registration failed.")
@@ -78,7 +80,7 @@ async function registerAccount(req, res) {
 async function accountLogin(req, res) {
     let nav = await utilities.getNav()
     const { account_email, account_password } = req.body
-    const accountData = await accountModel.getAccountByEmail(account_email)
+    const accountData = await accountModel.getAccountEmail(account_email)
     if (!accountData) {
       req.flash("notice", "Please check your credentials and try again.")
       res.status(400).render("account/login", {
@@ -98,15 +100,18 @@ async function accountLogin(req, res) {
         } else {
           res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
         }
+
+        req.flash('notice', 'You are now logged in.')
         return res.redirect("/account/")
       }
       else {
-        req.flash("message notice", "Please check your credentials and try again.")
+        req.flash("notice", "Please check your credentials and try again.")
         res.status(400).render("account/login", {
           title: "Login",
           nav,
           errors: null,
           account_email,
+          account_password
         })
       }
     } catch (error) {
@@ -116,10 +121,11 @@ async function accountLogin(req, res) {
 
 async function buildAccountManagement(req, res) {
     let nav = await utilities.getNav()
-    req.flash('notice')
-    res.render('account/accountManagement',{
+    // req.flash('notice')
+    res.render('account/',{
         title: 'Account Management',
         nav,
+        
         errors: null,
     })
 }

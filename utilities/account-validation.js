@@ -1,4 +1,4 @@
-const utilities = require('.')
+const utilities = require('../utilities')
 const {body, validationResult} = require('express-validator')
 const accountModel = require('../models/account-model')
 const validate = {}
@@ -58,6 +58,8 @@ validate.checkRegData = async(req, res, next) => {
     let errors = []
 
     errors = validationResult(req)
+    
+
     if(!errors.isEmpty()){
         let nav = await utilities.getNav()
         res.render('account/register', {
@@ -80,12 +82,15 @@ validate.loginRules = () => {
     return [
         body('account_email')
             .trim()
+            .notEmpty()
+            .escape()
             .isEmail()
             .normalizeEmail()
             .withMessage('A valid email is required.'),
         
         body('account_password')
             .trim()
+           
             .notEmpty()
             .isStrongPassword({
                 minLength: 12,
@@ -98,20 +103,23 @@ validate.loginRules = () => {
     ]
 }
 
-validate.validateLoginData = async (req, res, next) => {
+validate.checkLoginData = async (req, res, next) => {
     const { account_email } = req.body
     let errors = validationResult(req)
+  
 
+    
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
         res.render('account/login', {
-            errors: errors.array(), // Format errors for display
+            errors, // Format errors for display
             title: 'Login',
             nav,
             account_email, // Sticky input for email
         })
-        return
-    }
+        return 
+    
+    } 
     next()
 }
 

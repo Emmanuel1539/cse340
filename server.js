@@ -19,10 +19,10 @@ const inventoryRoute = require('./routes/inventoryRoute')
 // Account route
 const accountRoute = require('./routes/accountRoute')
 
-const utilities = require('./utilities')
+const utilities = require('./utilities/')
 const causeError = require('./routes/errorRoute')
 const session = require('express-session')
-const pool = require('./database')
+const pool = require('./database/')
 const cookieParser = require('cookie-parser')
 
 /* ***********************
@@ -50,7 +50,7 @@ app.use(session({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 // cookie parser
-app.use(cookieParser)
+app.use(cookieParser())
 
 // Express messages middlewares
 app.use(require('connect-flash')())
@@ -58,6 +58,9 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+
+// JWT Token middleware
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Routes

@@ -33,4 +33,4 @@ async function getAccountEmail(account_email) {
     }
 }
 
-module.exports = {registerAccount, checkExistingEmail}
+module.exports = {registerAccount, checkExistingEmail, getAccountEmail}
