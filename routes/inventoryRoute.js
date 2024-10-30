@@ -26,8 +26,17 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 // GET /inv/edit/:inventory_id
 router.get('/edit/:inventory_id', utilities.handleErrors(invController.buildEditInventoryView))
 
+
+// Route to update new inventory
+router.post("/update/", 
+        validate.newInventoryRules(), 
+        validate.checkUpdateData,
+        utilities.handleErrors(invController.updateInventory))
 // Route to add new inventory item view
-router.get('/add-inventory', utilities.handleErrors(invController.buildAddInventoryView))
+router.get('/add-inventory',
+    validate.addInventoryRules(),
+    validate.checkInventoryData,
+    utilities.handleErrors(invController.buildAddInventoryView))
 
 // Route to add-classification 
 router.post('/add-classification',

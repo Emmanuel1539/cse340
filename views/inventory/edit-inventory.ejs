@@ -19,17 +19,137 @@
 <% } %> 
     <!-- Form to add new classification -->
     <form action="/inv/update" method="POST">
-        <label for="update_name">Update Name</label>
+        <!-- Classification dropdown -->
+        <label for="classificationList">Classification</label>
+        <select name="classification_id" id="classification" required>
+            <%- classificationSelect  %>
+        </select>
+        
+        <!-- Make input -->
+        <label for="invMake">Make</label>
         <input 
             type="text" 
-            name="inv_id" 
-            id="update_name" 
+            name="inv_make" 
+            id="invMake" 
             required 
-            pattern="^[a-zA-Z0-9]+$" 
-            title="Update name cannot contain spaces or special characters" 
-            value="<%= locals.classification_name %>">
-
-        
+            pattern="^[a-zA-Z0-9 ]+$"
+            minlength="3" 
+            placeholder="Min of 3 characters"
+            <% if (locals.inv_make) { %>
+                value="<%= locals.inv_make %>">
+            <% } %>>
+            
+    
+        <!-- Model input -->
+        <label for="invModel">Model</label>
+        <input 
+            type="text" 
+            name="inv_model" 
+            id="invModel" 
+            required 
+            pattern="^[a-zA-Z0-9 ]+$" 
+            minlength="3"
+            placeholder="Min of 3 characters"
+            <% if (locals.inv_model) { %>
+                value="<%= locals.inv_model %>">
+            <% } %>>
+    
+        <!-- Description input -->
+        <label for="invDescription">Description</label>
+        <textarea 
+            name="inv_description" 
+            id="description" 
+            required 
+            maxlength="500" 
+            title="Description cannot exceed 500 characters">
+            <% if (locals.inv_description) { %>
+                value="<%= locals.inv_description %>">
+            <% } %>
+        </textarea>
+    
+        <!-- Image Path input -->
+        <label for="image">Image Path</label>
+        <input 
+            type="text" 
+            name="inv_image" 
+            id="image" 
+            required 
+            <% if (locals.inv_image) { %>
+                value="<%= locals.inv_image %>">
+            <% } %>>
+    
+        <!-- Thumbnail Path input -->
+        <label for="thumbnail">Thumbnail Path</label>
+        <input 
+            type="text" 
+            name="inv_thumbnail" 
+            id="thumbnail" 
+            required 
+            <% if (locals.inv_thumbnail) { %>
+                value="<%= locals.inv_thumbnail %>">
+            <% } %>>
+    
+        <!-- Price input -->
+        <label for="price">Price</label>
+        <input 
+            type="number" 
+            name="inv_price" 
+            id="price" 
+            required 
+            step="0.01" 
+            min="0" 
+            placeholder="Digits only"
+            <% if (locals.inv_price) { %>
+                value="<%= locals.inv_price %>">
+            <% } %>>
+    
+        <!-- Year input -->
+        <label for="year">Year</label>
+        <input 
+            type="number" 
+            name="inv_year" 
+            id="year" 
+            required 
+            min="1900" 
+            max="2099" 
+            title="Enter a valid year" 
+            <% if (locals.inv_year) { %>
+                value="<%= locals.inv_year %>">
+            <% } %>>
+    
+        <!-- Miles input -->
+        <label for="miles">Miles</label>
+        <input 
+            type="number" 
+            name="inv_miles" 
+            id="miles" 
+            required 
+            min="0" 
+            placeholder="Digits only"
+            <% if (locals.inv_miles) { %>
+                value="<%= locals.inv_miles %>">
+            <% } %>>
+    
+        <!-- Color input -->
+        <label for="color">Color</label>
+        <input 
+            type="text" 
+            name="inv_color" 
+            id="color" 
+            required 
+            pattern="^[a-zA-Z]+$" 
+            minlength="3"
+            placeholder="Min of 3 characters"
+            <% if (locals.inv_miles) { %>
+                value="<%= locals.inv_miles %>">
+            <% } %>>
+    
+        <!-- Hidden input to store the vehicle ID -->
+        <input type="hidden" name="inv_id" <% if (locals.inv_id) { %>
+            value="<%= locals.inv_id %>">
+        <% } %>">
+    
         <button type="submit">Update Vehicle</button>
     </form>
+    
 </div>
