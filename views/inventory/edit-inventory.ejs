@@ -1,6 +1,35 @@
-<% if(title) {%>
+<% if (title) { %>
     <h1><%= title %></h1>
-    <%} else{
-        res.redirect('/')
-    }
-%>
+<% } %>
+
+
+<div class="form__container">
+
+    
+<!-- Message Block to display if needed -->
+    <%- messages() %>
+    
+<!-- Display error messages from validation -->
+<% if (errors && errors.length > 0) { %>
+<ul class="notice">
+    <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+    <% }); %> <!-- Ensure you have a closing tag here -->
+</ul>
+<% } %> 
+    <!-- Form to add new classification -->
+    <form action="/inv/update" method="POST">
+        <label for="update_name">Update Name</label>
+        <input 
+            type="text" 
+            name="inv_id" 
+            id="update_name" 
+            required 
+            pattern="^[a-zA-Z0-9]+$" 
+            title="Update name cannot contain spaces or special characters" 
+            value="<%= locals.classification_name %>">
+
+        
+        <button type="submit">Update Vehicle</button>
+    </form>
+</div>

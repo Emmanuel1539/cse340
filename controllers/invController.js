@@ -127,11 +127,11 @@ invCont.getInventoryJSON = async (req, res, next) => {
 
 invCont.buildEditInventoryView = async (req, res, next) =>{
     
-    const inventoryId = parseInt(req.params.inventory_id)
+    const inventoryId = parseInt(req.params.inv_id)
     let nav = await utilities.getNav()
 
-    const inventoryItem = await invModel.getInventoryItemById(inventoryId)
-    const classificationSelect = await utilities.buildClassificationList(inventoryItem)
+    const itemData = await invModel.getInventoryItemById(inventoryId)
+    const classificationSelect = await utilities.buildClassificationList(itemData)
     
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
     res.render("./inventory/edit-inventory", {
@@ -151,7 +151,6 @@ invCont.buildEditInventoryView = async (req, res, next) =>{
     inv_color: itemData.inv_color,
     classification_id: itemData.classification_id
   })
-  next()
 }
 
 module.exports = invCont;

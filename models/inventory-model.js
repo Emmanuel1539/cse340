@@ -57,7 +57,18 @@ async function checkExistingClassifiactionName(classification_name) {
    } 
 }
 
+async function getInventoryItemById(inventoryId) {
+    try {
+        const query = 'SELECT * FROM inventory WHERE inv_id = $1'
+        const result = await pool.query(query, [inventoryId])
+        return result.rows[0]
+    } catch (error) {
+        console.error('Error retrieving inventory it by ID', error)
+    }
+}
+
 module.exports = {getClassification, 
+                getInventoryItemById,
                 getInventoryByClassificationId, 
                 getVehicleByInventoryId,
                 insertClassification,
