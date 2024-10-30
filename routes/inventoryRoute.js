@@ -18,6 +18,14 @@ router.get('/', invController.buildManagementView)
 router.get('/add-classification', 
     invController.buildAddClassificationView)
 
+// inventory classification id 
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+
+// Route to present edit form for a specific inventory item
+// GET /inv/edit/:inventory_id
+router.get('/edit/:inventory_id', utilities.handleErrors(invController.buildEditInventoryView))
+
 // Route to add new inventory item view
 router.get('/add-inventory', utilities.handleErrors(invController.buildAddInventoryView))
 

@@ -43,10 +43,13 @@ invCont.buildByInventoryId = async function (req, res, next) {
 invCont.buildManagementView = async function (req, res, next) {
     try{
         const managementHTML = utilities.buildManagementView()
+        const classificationSelect = await utilities.buildClassificationList()
         const nav = await utilities.getNav()
         res.render('./inventory/management', {
             title: 'Vehicle Management',
             nav, 
+            errors: null,
+            classificationSelect,
             managementHTML,
         })
     } catch(error){
@@ -109,6 +112,46 @@ invCont.addClassification = async function (req, res, next) {
         req.flash('notice', 'An unexpected error occured');
         redirect('/inv/add-classification')
     }
+}
+
+// Return inventory by classification as JSON
+invCont.getInventoryJSON = async (req, res, next) => {
+    const classification_id = parseInt(req.params.classification_id)
+    const invData = await invModel.getInventoryByClassificationId(classification_id)
+    if (invData[0].inv_id) {
+      return res.json(invData)
+    } else {
+      next(new Error("No data returned"))
+    }
+  }
+
+invCont.buildEditInventoryView = async (req, res, next) =>{
+    
+    const inventoryId = parseInt(req.params.inventory_id)
+    let nav = await utilities.getNav()
+
+    const inventoryItem = await invModel.getInventoryItemById(inventoryId)
+    const classificationSelect = await utilities.buildClassificationList(inventoryItem)
+    
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+    res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  })
+  next()
 }
 
 module.exports = invCont;
