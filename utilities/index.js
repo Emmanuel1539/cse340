@@ -166,6 +166,19 @@ Util.checkLogin = (req, res, next) => {
    }
 
 
+// Authorization Middleware to Check User Role
+Util.authorizeAdminOrEmployee = (req, res, next) => {
+    const accountData = res.locals.accountData;
+
+    // Check if the accountData exists and userType is either Employee or Admin
+    if (accountData && (accountData.userType === 'Employee' || accountData.userType === 'Admin')) {
+        next();  // Authorized
+    } else {
+        req.flash("error", "You do not have permission to access this resource.");
+        res.redirect("/account/login");  // Redirect to login if not authorized
+    }
+};
+
 // Build classification list 
 Util.buildClassificationList = async function (classification_id = null) {
     let data = await invModel.getClassification()

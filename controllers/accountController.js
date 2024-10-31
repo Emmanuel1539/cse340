@@ -121,12 +121,14 @@ async function accountLogin(req, res) {
 
 async function buildAccountManagement(req, res) {
     let nav = await utilities.getNav()
+    // Assuming accountData is set in res.locals
+    const accountData = res.locals.accountData; 
     // req.flash('notice')
     res.render('account/',{
         title: 'Account Management',
         nav,
-        
         errors: null,
+        accountData: accountData,
     })
 }
 

@@ -1,0 +1,89 @@
+<% if(title) {%>
+    <h1><%= title %></h1>
+    <%} else{
+        res.redirect('/')
+    }
+%>
+
+<div class="form__container">
+    <!-- error messages -->
+    <% if (errors) { %>
+        <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+        </ul>
+    <% } %>
+
+    <%- messages() %>
+
+
+        <!-- Account Update Form -->
+    <form action="/account/update" method="POST">
+        <fieldset>
+            <legend>Account Update</legend>
+
+            <label for="firstname">First Name:</label>
+            <input 
+                type="text" 
+                id="firstname" 
+                name="account_firstname" 
+                required 
+                value="<%= locals.account_firstname %>">
+
+            <label for="lastname">Last Name:</label>
+            <input 
+                type="text" 
+                id="lastname" 
+                name="account_lastname" 
+                required 
+                value="<%= locals.account_lastname %>">
+
+            <label for="email">Email:</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                value="<%= locals.account_email %>">
+
+            <input 
+            type="hidden" 
+            name="account_id" 
+            value="<%= locals.account_id %>">
+
+            <button type="submit">Update Account</button>
+        </fieldset>
+    </form>
+
+     <!-- Change Password Form -->
+     <form action="/account/change-password" method="POST">
+        <fieldset>
+            <legend>Change Password</legend>
+
+        
+            <label for="newpassword">New Password:</label>
+            <input 
+                type="password"
+                name="account_password" 
+                id="password" 
+                required 
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+            <p>Changing your password will update your current password. Your password must;</p>
+            <ul>
+                <li>At least 8 characters long</li>
+                <li>Contains at least one uppercase letter</li>
+                <li>Contains at least one number</li>
+                <li>Contains at least one special character</li>
+            </ul>
+ 
+            <input 
+                type="hidden" 
+                name="account_id" 
+                value="<%= accountData._id %>">
+                
+            <button type="submit">Change Password</button>
+        </fieldset>
+    </form>
+</div>

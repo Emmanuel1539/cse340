@@ -11,7 +11,13 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin))
 // Route to build regeration view
 router.get('/register', utilities.handleErrors(accountController.buildRegister))
 
-router.get('/', utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement) )
+router.get(
+    '/', 
+    utilities.checkJWTToken,
+    utilities.checkLogin, 
+    utilities.handleErrors(accountController.buildAccountManagement) 
+)
+
 // Route to post form 
 router.post(
     '/register',
