@@ -125,7 +125,7 @@ Util.buildManagementView = function() {
             <div class="management-links">
                 <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
                 <br>
-                <a href="/inv/add-item" class="btn btn-primary">Add New Inventory Item</a>
+                <a href="/inv/add-inventory" class="btn btn-primary">Add New Inventory Item</a>
             </div>
         </div>
     `;

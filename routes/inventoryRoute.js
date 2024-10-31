@@ -33,10 +33,15 @@ router.post("/update/",
         validate.checkUpdateData,
         utilities.handleErrors(invController.updateInventory))
 // Route to add new inventory item view
-router.get('/add-inventory',
+
+router.get('/add-inventory',  utilities.handleErrors(invController.buildAddInventoryView))
+
+router.post('/add-inventory',
     validate.addInventoryRules(),
     validate.checkInventoryData,
-    utilities.handleErrors(invController.buildAddInventoryView))
+    utilities.handleErrors(invController.addInventoryItem)
+)
+
 
 // Route to add-classification 
 router.post('/add-classification',

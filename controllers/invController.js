@@ -45,7 +45,7 @@ invCont.buildManagementView = async function (req, res, next) {
         const managementHTML = utilities.buildManagementView()
         const classificationSelect = await utilities.buildClassificationList()
         const nav = await utilities.getNav()
-        res.render('./inventory/management', {
+        res.render('inventory/management', {
             title: 'Vehicle Management',
             nav, 
             errors: null,
@@ -168,7 +168,7 @@ invCont.addInventoryItem = async (req, res, next) => {
 
         if (addResult) {
             req.flash("success", "Inventory item added successfully.");
-            res.redirect("/inventory/management");
+            res.redirect("/inv/");
         } else {
             throw new Error("Failed to add inventory item.");
         }
@@ -176,7 +176,7 @@ invCont.addInventoryItem = async (req, res, next) => {
         console.error("Error adding inventory item:", error);
         let nav = await utilities.getNav();
         const classificationSelect = await utilities.buildClassificationList();
-        res.render("./inventory/add-inventory", {
+        res.render("inventory/add-inventory", {
             title: "Add New Inventory Item",
             nav,
             classificationSelect,
@@ -189,14 +189,14 @@ invCont.addInventoryItem = async (req, res, next) => {
 
 invCont.buildEditInventoryView = async (req, res, next) =>{
     
-    const inv_id = parseInt(req.params.inv_id)
+    const inv_id = parseInt(req.params.inventory_id)
     let nav = await utilities.getNav()
 
     const itemData = await invModel.getInventoryItemById(inv_id)
     const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
     
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
-    res.render("./inventory/edit-inventory", {
+    res.render("inventory/edit-inventory", {
     title: "Edit " + itemName,
     nav,
     classificationSelect: classificationSelect,

@@ -61,7 +61,7 @@ async function getInventoryItemById(inv_id) {
     try {
         const query = 'SELECT * FROM inventory WHERE inv_id = $1'
         const result = await pool.query(query, [inv_id])
-        return result.rowCount
+        return result.rows[0]
     } catch (error) {
         console.error('Error retrieving inventory by ID', error)
     }

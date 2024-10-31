@@ -85,13 +85,15 @@ validate.addInventoryRules = () => {
         
         body('inv_image')
             .trim()
-            .isURL()
+            .notEmpty()
+            .isLength({min: 1})
             .withMessage('Please provide a valid image URL.'),
 
         
         body('inv_thumbnail')
             .trim()
-            .isURL()
+            .notEmpty()
+            .isLength({min: 1})
             .withMessage('Please provide a valid thumbnail URL.'),
 
        
@@ -131,12 +133,12 @@ validate.checkInventoryData = async (req, res, next) => {
 
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
-        let classificationList = await utilities.buildClassificationList(); // Populate classification list for the select dropdown
+        let classificationSelect = await utilities.buildClassificationList(); // Populate classification list for the select dropdown
         res.render('inventory/add-inventory', {
             errors,               // Display validation errors
             title: 'Add New Inventory',
             nav,
-            classificationList,   // Pass the classification list to the view
+            classificationSelect,   // Pass the classification list to the view
             classification_id,    // Sticky input data
             inv_make,
             inv_model,

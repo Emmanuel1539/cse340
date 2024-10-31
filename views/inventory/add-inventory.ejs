@@ -1,116 +1,123 @@
 
 
-    
-        <%= messages() %>
+
+<% if(title) {%>
+    <h1><%= title %></h1>
+    <%} else{
+        res.redirect('/')
+    }
+%>
+
+<!-- Display error messages if any -->
+<% if (errors) { %>
+    <ul class="errors">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
+<% } %>
+<%= messages() %>
+<!-- Inventory Form -->
+<form action="/inv/add-inventory" method="POST">
+    <label for="classification_id">Classification
+        <%- classificationSelect %>
+    </label>
         
-        <!-- Display error messages if any -->
-        <% if (errors) { %>
-            <ul class="errors">
-                <% errors.forEach(error => { %>
-                    <li><%= error.msg %></li>
-                <% }) %>
-            </ul>
-        <% } %>
-
-        <!-- Inventory Form -->
-        <form action="/inventory/add" method="POST">
-            <label for="classification_id">Classification</label>
-            <select name="classification_id" id="classification_id">
-                <%= classificationSelect %> <!-- Dynamic dropdown for classifications -->
-            </select>
-
-            <label for="inv_make">Make</label>
-            <input 
-                type="text" 
-                id="inv_make"
-                name="inv_make"
-                <% if (locals.inv_make) { %>
-                    value="<%= locals.inv_make %>">
-                <% } %>   required>
-
-            <label for="inv_model">Model</label>
-            <input 
-                type="text" 
-                id="inv_model" 
-                name="inv_model"
-                required 
-                <% if (locals.inv_model) { %>
-                    value="<%= locals.inv_model %>">
-                <% } %>
-                >
-
-            <label for="inv_year">Year</label>
-            <input 
-                type="number" 
-                id="inv_year" 
-                name="inv_year" 
-                min="1900"
-                max="<%= new Date().getFullYear() %>" 
-                required 
-                <% if (locals.inv_year) { %>
-                    value="<%= locals.inv_year %>">
-                <% } %>>
-
-            <label for="inv_price">Price</label>
-            <input 
-                type="number" 
-                id="inv_price" 
-                name="inv_price" 
-                min="0" step="0.01" 
-                required
-                <% if (locals.inv_price) { %>
-                    value="<%= locals.inv_price %>">
-                <% } %>>
-
-            <label for="inv_miles">Miles</label>
-            <input 
-                type="number" 
-                id="inv_miles" 
-                name="inv_miles" 
-                min="0" 
-                required
-                <% if (locals.inv_miles) { %>
-                    value="<%= locals.inv_miles %>">
-                <% } %>>
-
-            <label for="inv_color">Color</label>
-            <input 
-                type="text" 
-                id="inv_color" 
-                name="inv_color" 
-                required
-                <% if (locals.inv_miles) { %>
-                    value="<%= locals.inv_miles %>">
-                <% } %>>
-
-            <label for="inv_description">Description</label>
-            <textarea 
-                id="inv_description" 
-                name="inv_description">
-                <% if (locals.inv_description) { %>
-                    value="<%= locals.inv_description %>">
-                <% } %>
-                </textarea>
-
-            <label for="inv_image">Image URL</label>
-            <input 
-                type="text" 
-                id="inv_image" 
-                name="inv_image" 
-                <% if (locals.inv_image) { %>
-                    value="<%= locals.inv_image %>">
-                <% } %>>
-
-            <label for="inv_thumbnail">Thumbnail URL</label>
-            <input 
-                type="text" 
-                id="inv_thumbnail" 
-                name="inv_thumbnail" 
-                <% if (locals.inv_thumbnail) { %>
-                    value="<%= locals.inv_thumbnail %>">
-                <% } %>>
-
-            <button type="submit">Add Inventory</button>
-        </form>
     
+
+    <label for="inv_make">Make</label>
+    <input 
+        type="text" 
+        id="inv_make"
+        name="inv_make"
+        required
+        <% if (locals.inv_make) { %>
+            value="<%= locals.inv_make %>">
+        <% } %> >
+
+    <label for="inv_model">Model</label>
+    <input 
+        type="text" 
+        id="inv_model" 
+        name="inv_model"
+        required 
+        <% if (locals.inv_model) { %>
+            value="<%= locals.inv_model %>">
+        <% } %>
+        >
+
+    <label for="inv_year">Year</label>
+    <input 
+        type="number" 
+        id="inv_year" 
+        name="inv_year" 
+        min="1900"
+        max="<%= new Date().getFullYear() %>" 
+        required 
+        <% if (locals.inv_year) { %>
+            value="<%= locals.inv_year %>">
+        <% } %>>
+
+    <label for="inv_price">Price</label>
+    <input 
+        type="number" 
+        id="inv_price" 
+        name="inv_price" 
+        min="0" step="0.01" 
+        required
+        <% if (locals.inv_price) { %>
+            value="<%= locals.inv_price %>">
+        <% } %>>
+
+    <label for="inv_miles">Miles</label>
+    <input 
+        type="number" 
+        id="inv_miles" 
+        name="inv_miles" 
+        min="0" 
+        required
+        <% if (locals.inv_miles) { %>
+            value="<%= locals.inv_miles %>">
+        <% } %>>
+
+    <label for="inv_color">Color</label>
+    <input 
+        type="text" 
+        id="inv_color" 
+        name="inv_color" 
+        required
+        <% if (locals.inv_miles) { %>
+            value="<%= locals.inv_miles %>">
+        <% } %>>
+
+    <label for="inv_description">Description</label>
+    <textarea 
+        id="inv_description" 
+        name="inv_description">
+        <% if (locals.inv_description) { %>
+            value="<%= locals.inv_description %>">
+        <% } %>
+        </textarea>
+
+    <label for="inv_image">Image URL</label>
+    <input 
+        type="text" 
+        id="inv_image" 
+        name="inv_image" 
+        <% if (locals.inv_image) { %>
+            value="<%= locals.inv_image %>">
+        <% } %>>
+
+    <label for="inv_thumbnail">Thumbnail URL</label>
+    <input 
+        type="text" 
+        id="inv_thumbnail" 
+        name="inv_thumbnail" 
+        <% if (locals.inv_thumbnail) { %>
+            value="<%= locals.inv_thumbnail %>">
+        <% } %>>
+
+    <button type="submit">Add Inventory</button>
+</form>
+
 
