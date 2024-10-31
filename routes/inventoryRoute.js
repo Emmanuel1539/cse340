@@ -51,4 +51,10 @@ router.post('/add-classification',
     
 )
 
+// Route to delete view
+router.get('/delete/:inv_id', utilities.handleErrors(invController.addDeleteView))
+
+// Route to delete item
+router.post('/delete/:inv_id,', utilities.handleErrors(invController.deleteItem))
+
 module.exports = router;
