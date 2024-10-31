@@ -55,6 +55,6 @@ router.post('/add-classification',
 router.get('/delete/:inv_id', utilities.handleErrors(invController.addDeleteView))
 
 // Route to delete item
-router.post('/delete/:inv_id,', utilities.handleErrors(invController.deleteItem))
+router.post('/delete/:inv_id', utilities.handleErrors(invController.deleteItem))
 
 module.exports = router;
