@@ -195,6 +195,21 @@ Util.buildClassificationList = async function (classification_id = null) {
     classificationList += "</select>"
     return classificationList
 }
+
+Util.getAccountTool = async function (accountData) {
+    let accountTool;
+    if(accountData){
+        const userName= accountData.account_firstname
+     
+        accountTool = `<a title="Click to Manage Account" href="/account/">Welcome ${userName} </a>`
+        accountTool += `<a title="Click to Logout" href="/account/logout/">Logout</a>`
+      }else{
+        accountTool = `<a title="Click to log in" href="/account/">My Account</a>`
+      }
+     
+      return accountTool
+    }
+
   
   /* ***********************
  * Middleware for handling errors

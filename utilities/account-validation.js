@@ -62,10 +62,14 @@ validate.checkRegData = async(req, res, next) => {
 
     if(!errors.isEmpty()){
         let nav = await utilities.getNav()
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
         res.render('account/register', {
             errors,
             title: 'Registration',
             nav, 
+            accountTool,
             account_firstname,
             account_lastname,
             account_email,
@@ -122,5 +126,106 @@ validate.checkLoginData = async (req, res, next) => {
     } 
     next()
 }
+
+
+// Account update rules and check update data
+validate.accountUpdateRules = () => {
+    return [
+        // First name: required, non-empty, and must be a string
+        body('account_firstname')
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage('Please provide a first name.'),
+
+        // Last name: required, non-empty, and must be a string
+        body('account_lastname')
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage('Please provide a last name.'),
+
+        // Email: required, valid email format, and must not already exist
+        body('account_email')
+            .trim()
+            .isEmail()
+            .normalizeEmail()
+            .withMessage('A valid email is required.')
+            .custom(async (account_email, { req }) => {
+                const emailExists = await accountModel.checkExistingEmail(account_email)
+                if(emailExists){
+                    throw new Error('Email already exists. Please use a different email.')
+                }
+            })
+    ]
+}
+
+// Middleware to check validation result for the account update form
+validate.checkUpdateData = async (req, res, next) => {
+    const { account_firstname, account_lastname, account_email, account_id } = req.body
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
+        res.render('account/update', {
+            errors,
+            title: 'Update Account',
+            nav,
+            accountTool,
+            account_firstname,
+            account_lastname,
+            account_email,
+            account_id,
+        })
+        return
+    }
+    next()
+}
+
+
+// Password change validation rules
+validate.changePasswordRules = () => {
+    return [
+        body('account_password')
+            .trim()
+            .notEmpty()
+            .isStrongPassword({
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+            })
+            .withMessage('Password must be at least 8 characters long and include uppercase letters, numbers, and special characters.')
+    ]
+}
+
+// Middleware to check validation result for the password change form
+validate.checkPasswordData = async (req, res, next) => {
+    const { account_id } = req.body
+    let errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
+        res.render('account/update', {
+            errors,
+            title: 'Change Password',
+            nav,
+            accountTool,
+            account_id
+        })
+        return
+    }
+    next()
+}
+
+
+
 
 module.exports = validate

@@ -25,6 +25,7 @@ router.post(
     regValidate.checkRegData,
     utilities.handleErrors(accountController.registerAccount))
 
+// Route to login 
 router.post(
     "/login", 
     regValidate.loginRules(),
@@ -32,5 +33,31 @@ router.post(
     utilities.handleErrors(accountController.accountLogin)
 )
 
+
+// Route to deliver the account update view
+router.get(
+    'update/:account_id',
+    utilities.checkLogin,
+    utilities.handleErrors(accountController.buildAccountUpdateView)
+)
+
+// Route to process the account update
+router.post(
+    '/update',
+    utilities.checkJWTToken, 
+    regValidate.accountUpdateRules(),
+    regValidate.checkUpdateData,
+    utilities.handleErrors(accountController.processAccountUpdate)
+)
+
+// Route to process password change
+router.post(
+    '/change-password',
+    utilities.checkJWTToken, 
+    regValidate.changePasswordRules(),
+    regValidate.checkPasswordData,
+    utilities.handleErrors(accountController.processPasswordChange)
+
+)
 
 module.exports = router;

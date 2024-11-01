@@ -89,6 +89,10 @@ app.use((req, res, next) => {
 //  *************************/
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
+
+  const accountData = res.locals.accountData
+  let accountTool = await utilities.getAccountTool(accountData)
+ 
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   if (err.status == 404) {
     message = err.message
@@ -99,6 +103,7 @@ app.use(async (err, req, res, next) => {
     title: err.status || "Server Error",
     message,
     nav,
+    accountTool,
   })
 })
 

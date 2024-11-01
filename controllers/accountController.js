@@ -9,10 +9,12 @@ require('dotenv').config()
 // buiding login control
 async function buildLogin(req, res, next) {
     let nav = await utilities.getNav()
-
+    const accountData = res.locals.accountData
+    let accountTool = await utilities.getAccountTool(accountData)
     res.render('account/login', {
         title: "Login",
         nav,
+        accountTool,
         errors: null,
     })
 }
@@ -20,17 +22,25 @@ async function buildLogin(req, res, next) {
 // build register
 async function buildRegister(req, res, next) {
     let nav = await utilities.getNav()
-
+    const accountData = res.locals.accountData
+    let accountTool = await utilities.getAccountTool(accountData)
     res.render('account/register',{
         title: "Register",
         nav,
+        accountTool,
         errors: null,
+     
+
             })
     
 }
 
 async function registerAccount(req, res) {
     let nav = await utilities.getNav()
+
+    const accountData = res.locals.accountData
+    let accountTool = await utilities.getAccountTool(accountData)
+  
     const {account_firstname, account_lastname, account_email, account_password} = req.body
 
     // Hash the password before storing
@@ -62,6 +72,7 @@ async function registerAccount(req, res) {
         res.status(201).render('account/login',{
             title: "Login",
             nav,
+            accountTool,
             errors: null
         })
     } else{
@@ -69,6 +80,7 @@ async function registerAccount(req, res) {
         res.status(501).render('account/register', {
             title: "Registration",
             nav,
+            accountTool,
             errors: null,
             account_firstname,
             account_lastname,
@@ -79,13 +91,17 @@ async function registerAccount(req, res) {
 
 async function accountLogin(req, res) {
     let nav = await utilities.getNav()
+    
     const { account_email, account_password } = req.body
     const accountData = await accountModel.getAccountEmail(account_email)
+
+    let accountTool = await utilities.getAccountTool(accountData)
     if (!accountData) {
       req.flash("notice", "Please check your credentials and try again.")
       res.status(400).render("account/login", {
         title: "Login",
         nav,
+        accountTool,
         errors: null,
         account_email,
       })
@@ -109,7 +125,8 @@ async function accountLogin(req, res) {
         res.status(400).render("account/login", {
           title: "Login",
           nav,
-          errors: null,
+          accountTool,
+          errors: null, 
           account_email,
           account_password
         })
@@ -122,14 +139,85 @@ async function accountLogin(req, res) {
 async function buildAccountManagement(req, res) {
     let nav = await utilities.getNav()
     // Assuming accountData is set in res.locals
-    const accountData = res.locals.accountData; 
+    const accountData = res.locals.accountData
+    let accountTool = await utilities.getAccountTool(accountData)
+  
+    
     // req.flash('notice')
     res.render('account/',{
         title: 'Account Management',
         nav,
+        accountTool,
         errors: null,
         accountData: accountData,
     })
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement}
+
+async function buildAccountUpdateView(req, res) {
+  const accountId = req.params.id;
+  const accountData = await accountModel.getAccountById(accountId); // Ensure this function exists
+  res.render('account/update', {
+      title: 'Update Account Information',
+      account: accountData,
+      errors: null,
+  });
+}
+
+
+async function processAccountUpdate(req, res) {
+  const {account_firstname, account_lastname, account_email, account_id} = req.body
+
+  // Update the account information in the database
+  const updateResult = await accountModel.updateAccount(account_id, {account_firstname,account_lastname, account_email})
+
+  if(updateResult){
+    req.flash('notice', 'Account information updated successfully.')
+
+  } else {
+    req.flash('error', 'Failed to update account information.')
+  }
+  const updatedAccount = await accountModel.getAccountById(account_id)
+  res.render('account/management', {
+    title: 'Account Management',
+    account: updatedAccount,
+    messages: req.flash(),
+  })
+
+}
+
+
+async function processPasswordChange(req, res) {
+  const { newPassword, account_id } = req.body;
+
+  // Validate password and hash it
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const updateResult = await accountModel.updatePassword(account_id, hashedPassword);
+
+  if (updateResult) {
+      req.flash('success', 'Password changed successfully.');
+  } else {
+      req.flash('error', 'Failed to change password.');
+  }
+  
+  // Return to account management view
+  const updatedAccount = await accountModel.getAccountById(account_id);
+  res.render('account/management', {
+      title: 'Account Management',
+      account: updatedAccount,
+      messages: req.flash(),
+  });
+}
+
+
+
+
+module.exports = {buildLogin, 
+                  buildRegister, 
+                  registerAccount, 
+                  accountLogin, 
+                  buildAccountManagement,
+                  processAccountUpdate,
+                  processPasswordChange,
+                  buildAccountUpdateView,
+                }

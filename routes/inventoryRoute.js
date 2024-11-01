@@ -49,7 +49,7 @@ router.get(
 router.post(
     "/update/", 
     utilities.checkJWTToken,
-    utilities.checkJWTToken,
+    utilities.checkLogin,
     utilities.authorizeAdminOrEmployee,
     validate.newInventoryRules(), 
     validate.checkUpdateData,

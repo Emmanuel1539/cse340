@@ -32,13 +32,17 @@ validate.checkClassificationData = async (req, res, next) => {
     // If there are validation errors, render the add-classification view with errors
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
-            res.render('./inventory/add-classification', {
-            errors: errors.array(), // Pass array of errors
-            title: 'Add New Classification',
-            nav,
-            classification_name,
-        
-        });
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
+        res.render('./inventory/add-classification', {
+        errors: errors.array(), // Pass array of errors
+        title: 'Add New Classification',
+        nav,
+        accountTool,
+        classification_name,
+    
+    });
         return
     }
 
@@ -133,11 +137,15 @@ validate.checkInventoryData = async (req, res, next) => {
 
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
         let classificationSelect = await utilities.buildClassificationList(); // Populate classification list for the select dropdown
         res.render('inventory/add-inventory', {
             errors,               // Display validation errors
             title: 'Add New Inventory',
             nav,
+            accountTool,
             classificationSelect,   // Pass the classification list to the view
             classification_id,    // Sticky input data
             inv_make,
@@ -206,6 +214,9 @@ validate.checkUpdateData = async (req, res, next) => {
 
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
+        const accountData = res.locals.accountData
+        let accountTool = await utilities.getAccountTool(accountData)
+       
         const classificationSelect = await utilities.buildClassificationList(req.body.classification_id);
         const itemName = `${inv_make} ${inv_model}`;
 
@@ -213,6 +224,7 @@ validate.checkUpdateData = async (req, res, next) => {
             errors,
             title: 'Edit ' + itemName,
             nav,
+            accountTool,
             classificationSelect,
             inv_id,
             inv_make,
