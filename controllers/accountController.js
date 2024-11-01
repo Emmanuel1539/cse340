@@ -215,6 +215,21 @@ async function processPasswordChange(req, res) {
   });
 }
 
+async function logout(req, res) {
+  let nav = await utilities.getNav();
+  const accountData = res.locals.accountData;
+  let accountTool = await utilities.getAccountTool(accountData);
+
+  // Clear the JWT cookie
+  res.clearCookie('jwt');
+
+  // Set a flash message
+  req.flash('notice', 'You have been logged out successfully.');
+
+  // Redirect to the home view
+  res.redirect('/')
+}
+
 
 
 
@@ -226,4 +241,5 @@ module.exports = {buildLogin,
                   processAccountUpdate,
                   processPasswordChange,
                   buildAccountUpdateView,
+                  logout,
                 }
