@@ -36,7 +36,7 @@ router.post(
 
 // Route to deliver the account update view
 router.get(
-    'update/:account_id',
+    '/update/:account_id',
     utilities.checkLogin,
     utilities.handleErrors(accountController.buildAccountUpdateView)
 )

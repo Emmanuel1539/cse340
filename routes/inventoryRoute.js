@@ -14,7 +14,7 @@ router.get('/detail/:inventoryId', invController.buildByInventoryId);
 // Route to display inventory management view
 router.get(
     '/',
-    utilities.checkJWTToken,
+ 
     utilities.checkLogin,
     utilities.authorizeAdminOrEmployee,
     utilities.handleErrors(invController.buildManagementView)    

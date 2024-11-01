@@ -149,17 +149,23 @@ async function buildAccountManagement(req, res) {
         nav,
         accountTool,
         errors: null,
-        accountData: accountData,
+       accountData,
     })
 }
 
 
 async function buildAccountUpdateView(req, res) {
   const accountId = req.params.id;
-  const accountData = await accountModel.getAccountById(accountId); // Ensure this function exists
+ 
+  let nav = await utilities.getNav()
+  // Assuming accountData is set in res.locals
+  const accountData = res.locals.accountData
+  let accountTool = await utilities.getAccountTool(accountData)
   res.render('account/update', {
       title: 'Update Account Information',
-      account: accountData,
+      nav,
+      accountTool,
+      accountData,
       errors: null,
   });
 }
@@ -169,7 +175,7 @@ async function processAccountUpdate(req, res) {
   const {account_firstname, account_lastname, account_email, account_id} = req.body
 
   // Update the account information in the database
-  const updateResult = await accountModel.updateAccount(account_id, {account_firstname,account_lastname, account_email})
+  const updateResult = await accountModel.getUpdatedAccount(account_id, {account_firstname,account_lastname, account_email})
 
   if(updateResult){
     req.flash('notice', 'Account information updated successfully.')
