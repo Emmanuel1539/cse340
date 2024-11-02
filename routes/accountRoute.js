@@ -44,7 +44,7 @@ router.get(
 // Route to process the account update
 router.post(
     '/update',
-    utilities.checkJWTToken, 
+    regValidate.getCurrentData,
     regValidate.accountUpdateRules(),
     regValidate.checkUpdateData,
     utilities.handleErrors(accountController.processAccountUpdate)
@@ -52,8 +52,7 @@ router.post(
 
 // Route to process password change
 router.post(
-    '/change-password',
-    utilities.checkJWTToken, 
+    '/change-password', 
     regValidate.changePasswordRules(),
     regValidate.checkPasswordData,
     utilities.handleErrors(accountController.processPasswordChange)

@@ -48,7 +48,12 @@ validate.registrationRules = () => {
     
             })
             .withMessage('Password does not meet requirements.')
-
+            .custom(async(account_email) => {
+                const emailExists = await accountModel.checkExistingEmail(account_email)
+                if(emailExists){
+                    throw new Error('Email exists. Please login or use different emaail.')
+                }
+            })
     ]
 }
 
@@ -127,6 +132,15 @@ validate.checkLoginData = async (req, res, next) => {
     next()
 }
 
+validate.getCurrentData = async (req, res, next) => {
+    const {account_id} = req.body
+    const currentId = parseInt(account_id)
+    const accountData = await accountModel.getAccountById(currentId)
+    req.currentUserData = accountData
+
+    next()
+    
+}  
 
 // Account update rules and check update data
 validate.accountUpdateRules = () => {
@@ -148,17 +162,27 @@ validate.accountUpdateRules = () => {
         // Email: required, valid email format, and must not already exist
         body('account_email')
             .trim()
+            .escape()
+            .notEmpty()
             .isEmail()
             .normalizeEmail()
             .withMessage('A valid email is required.')
             .custom(async (account_email, { req }) => {
+                const currentUserEmail = req.currentUserData.account_email
+                if (account_email == currentUserEmail){
+                    return true
+                } 
                 const emailExists = await accountModel.checkExistingEmail(account_email)
+
                 if(emailExists){
                     throw new Error('Email already exists. Please use a different email.')
                 }
             })
+            
     ]
 }
+
+
 
 // Middleware to check validation result for the account update form
 validate.checkUpdateData = async (req, res, next) => {

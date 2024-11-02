@@ -155,17 +155,20 @@ async function buildAccountManagement(req, res) {
 
 
 async function buildAccountUpdateView(req, res) {
-  const accountId = req.params.id;
- 
+  const accountId = parseInt(req.params.account_id);
+  
   let nav = await utilities.getNav()
   // Assuming accountData is set in res.locals
-  const accountData = res.locals.accountData
+  const accountData = await accountModel.getAccountById(accountId)
   let accountTool = await utilities.getAccountTool(accountData)
   res.render('account/update', {
       title: 'Update Account Information',
       nav,
       accountTool,
-      accountData,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+      account_id: accountData.account_id,
       errors: null,
   });
 }
@@ -175,7 +178,7 @@ async function processAccountUpdate(req, res) {
   const {account_firstname, account_lastname, account_email, account_id} = req.body
 
   // Update the account information in the database
-  const updateResult = await accountModel.getUpdatedAccount(account_id, {account_firstname,account_lastname, account_email})
+  const updateResult = await accountModel.updateAccountInfo(account_id, account_firstname, account_lastname, account_email)
 
   if(updateResult){
     req.flash('notice', 'Account information updated successfully.')
@@ -184,12 +187,7 @@ async function processAccountUpdate(req, res) {
     req.flash('error', 'Failed to update account information.')
   }
   const updatedAccount = await accountModel.getAccountById(account_id)
-  res.render('account/management', {
-    title: 'Account Management',
-    account: updatedAccount,
-    messages: req.flash(),
-  })
-
+  res.redirect('/inv')
 }
 
 
