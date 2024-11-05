@@ -109,7 +109,6 @@ profileCont.editProfile = async (req, res) => {
 };
 
 
-
 profileCont.showEditProfileView = async (req, res, next) => {
   const accountData = res.locals.accountData
   let accountTool = await utilities.getAccountTool(accountData)
@@ -122,13 +121,11 @@ profileCont.showEditProfileView = async (req, res, next) => {
     nav,
     accountTool,
     errors: null,
-    account_id: itemData.account_id,
-    profile_image: itemData.profile_image,
-    profile_bio: itemData.profile_bio,
-    profile_links: itemData.profile_links,
+    account_id: accountData.account_id,
+    profile_image: (itemData != null) ? itemData.profile_image : '',
+    profile_bio: (itemData != null) ? itemData.profile_bio : '',
+    profile_links: (itemData != null) ? itemData.profile_links : '{}',
   })
 }
-
-
 
 module.exports = profileCont
