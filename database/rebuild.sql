@@ -254,3 +254,21 @@ WHERE (inv_make = 'GM' AND inv_model = 'Hummer');
 UPDATE public.INVENTORY
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+
+
+-- Table: public.profile
+
+-- DROP TABLE IF EXISTS public.profile;
+
+CREATE TABLE IF NOT EXISTS public.profile
+(
+    account_id integer NOT NULL,
+    profile_image character varying(255) COLLATE pg_catalog."default",
+    profile_bio text COLLATE pg_catalog."default",
+    profile_links json,
+    CONSTRAINT profile_pkey PRIMARY KEY (account_id),
+    CONSTRAINT profile_account_id_fkey FOREIGN KEY (account_id)
+        REFERENCES public.account (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
