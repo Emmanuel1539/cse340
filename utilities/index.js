@@ -169,7 +169,7 @@ Util.checkLogin = (req, res, next) => {
 // Authorization Middleware to Check User Role
 Util.authorizeAdminOrEmployee = (req, res, next) => {
     const accountData = res.locals.accountData;
-    console.log(accountData)
+   
     // Check if the accountData exists and userType is either Employee or Admin
     if (accountData && (accountData.account_type === 'Employee' || accountData.account_type === 'Admin')) {
         next();
@@ -199,17 +199,42 @@ Util.buildClassificationList = async function (classification_id = null) {
 
 Util.getAccountTool = async function (accountData) {
     let accountTool;
+    
     if(accountData){
         const userName= accountData.account_firstname
      
         accountTool = `<a title="Click to Manage Account" href="/account/">Welcome ${userName} </a>`
-        accountTool += `<a title="Click to Logout" href="/account/logout/">Logout</a>`
+        accountTool += `<a title="Click to Manage Profile" class="profile" href="/profile/${accountData.account_id}"> Profile </a>`
+        accountTool += `<a title="Click to Logout" class="logout" href="/account/logout/">Logout</a>`
       }else{
         accountTool = `<a title="Click to log in" href="/account/">My Account</a>`
       }
      
       return accountTool
     }
+
+
+    // Create profile grid view
+   
+  Util.buildProfileView = function(data) {
+    
+    const profileHTML = `
+        
+        <div class="profile-detail-container">
+            <img src="${data.profile_image !== null ? data.profile_image  : ''}" alt="Full image of ${data.account_firstname}">
+            <div class="profile-info">
+                <h2>${data.account_firstname} ${data.account_lastname}</h2>
+                <h3>Brography</h3>
+                <p>${data.profile_bio}</p>
+                <h3>Social link</h3>
+                <p>${data.profile_link}</p>
+            </div>
+            <a title="Click to Edit" href="/profile/edit-profile">Edit Profile</a>
+        </div>
+    `;
+
+    return profileHTML;
+};
 
   
   /* ***********************

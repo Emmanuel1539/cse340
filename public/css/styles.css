@@ -34,8 +34,12 @@ header{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font-size: large;
 }
 
+.logout{
+  color: red;
+}
 .siteName{
   font-size: var(--font-size-lg);
   

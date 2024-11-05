@@ -18,6 +18,8 @@ const baseController = require('./controllers/baseController')
 const inventoryRoute = require('./routes/inventoryRoute')
 // Account route
 const accountRoute = require('./routes/accountRoute')
+// profile route
+const profileRoute = require('./routes/profileRoute')
 
 const utilities = require('./utilities/')
 const causeError = require('./routes/errorRoute')
@@ -73,6 +75,9 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use('/inv', inventoryRoute)
 //  Account route
 app.use('/account', accountRoute)
+
+// Profile route
+app.use('/profile', profileRoute)
 // Error route (causing intentional 500 errors)
 app.use('/causeError', causeError)
 

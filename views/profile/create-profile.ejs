@@ -1,0 +1,46 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } %>
+
+<div class="form__container">
+
+    <!-- Display error messages from validation -->
+    <% if (errors && errors.length > 0) { %>
+        <ul class="notice">
+            <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }); %> 
+        </ul>
+    <% } %> 
+
+    <h2>Create Your Profile</h2>
+    <form action="/profile/create" method="POST">
+        <!-- Hidden input to store the account ID -->
+        <input type="hidden" name="account_id" value="<%= profile.account_id %>">
+
+        <label>Profile Picture URL:</label>
+        <input 
+            type="text" 
+            name="profile_image" 
+            required
+            value="<%= profile.profile_image%>"
+            placeholder="Enter the URL of your profile picture">
+
+        <label>Biography:</label>
+        <textarea 
+            name="profile_bio" 
+            required 
+            value="<%= profile.profile_bio %>"
+            placeholder="Write a brief bio about yourself"></textarea>
+
+        <label>Social Links (JSON format):</label>
+        <input 
+            type="text" 
+            name="profile_links" 
+            required
+            value="<%= profile.profile_links %>"
+            placeholder='{"facebook": "your_link", "twitter": "your_link"}'>
+
+        <button type="submit">Create Profile</button>
+    </form>
+</div>
