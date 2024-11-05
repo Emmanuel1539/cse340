@@ -13,8 +13,6 @@ router.get('/:account_id',
 
 router.get(
     '/edit-profile',
-    proValidate.profileRules(),
-    proValidate.checkProfileData,
     utilities.handleErrors(profileCont.showEditProfileView)
 )
 

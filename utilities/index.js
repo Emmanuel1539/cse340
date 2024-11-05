@@ -216,25 +216,49 @@ Util.getAccountTool = async function (accountData) {
 
     // Create profile grid view
    
+//   Util.buildProfileView = function(data) {
+    
+//     const profileHTML = `
+        
+//         <div class="profile-detail-container">
+//             <img src="${data.profile_image !== null ? data.profile_image  : ''}" alt="Full image of ${data.account_firstname}">
+//             <div class="profile-info">
+//                 <h2>${data.account_firstname} ${data.account_lastname}</h2>
+//                 <h3>Brography</h3>
+//                 <p>${data.profile_bio}</p>
+//                 <h3>Social link</h3>
+//                 <p>${data.profile_link}</p>
+//             </div>
+//             <a title="Click to Edit" href="/profile/edit-profile">Edit Profile</a>
+//         </div>
+//     `;
+
+//     return profileHTML;
+// };
+
+
+  // Create profile grid view
+   
   Util.buildProfileView = function(data) {
+    console.log(data)
     
     const profileHTML = `
         
         <div class="profile-detail-container">
-            <img src="${data.profile_image !== null ? data.profile_image  : ''}" alt="Full image of ${data.account_firstname}">
+            <img src="${data && data.profile_image !== null ? data.profile_image  : ''}" alt="Full image of ${data && data.account_firstname != null ? data.account_firstname : ''}">
             <div class="profile-info">
-                <h2>${data.account_firstname} ${data.account_lastname}</h2>
+                <h2>${data && data.account_firstname !== null ? data.account_firstname : ''} ${data && data.account_lastname !== null ? data.account_lastname : ''}</h2>
                 <h3>Brography</h3>
-                <p>${data.profile_bio}</p>
+                <p>${data && data.profile_bio != null ? data.profile_bio : ''}</p>
                 <h3>Social link</h3>
-                <p>${data.profile_link}</p>
+                <p>${data && data.profile_link != null ? data.profile_link : ''}</p>
             </div>
             <a title="Click to Edit" href="/profile/edit-profile">Edit Profile</a>
         </div>
     `;
-
     return profileHTML;
 };
+ 
 
   
   /* ***********************

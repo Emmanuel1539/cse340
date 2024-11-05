@@ -15,27 +15,27 @@
 
     <h2>Edit Profile</h2>
     <form action="/profile/edit-profile" method="POST">
-        <input type="hidden" name="account_id" value="<%= profile.account_id %>">
+        <input type="hidden" name="account_id" value="<%= account_id %>">
 
         <label>Profile Picture URL:</label>
         <input 
             type="text" 
             name="profile_image" 
             required 
-            value="<%= profile.profile_image %>">
+            value="<%= profile_image %>">
 
         <label>Biography:</label>
         <textarea 
             name="profile_bio" 
             required 
             maxlength="500"
-            value = "<%= profile.profile_bio %>"></textarea>
+            value = "<%= profile_bio %>"></textarea>
 
         <label>Social Links (JSON format):</label>
         <input 
             type="text" 
             name="profile_links" 
-            value="<%= JSON.stringify(profile.profile_links) %>">
+            value="<%= JSON.stringify(profile_links) %>">
 
         <button type="submit">Update Profile</button>
     </form>
