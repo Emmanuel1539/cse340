@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const invModel = require('../models/inventory-model');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -251,7 +252,7 @@ Util.getAccountTool = async function (accountData) {
                 <h3>Brography</h3>
                 <p>${data && data.profile_bio != null ? data.profile_bio : ''}</p>
                 <h3>Social link</h3>
-                <p>${data && data.profile_link != null ? data.profile_link : ''}</p>
+                <p>${data && data.profile_links != null ? JSON.stringify(data.profile_links) : ''}</p>
             </div>
             <a title="Click to Edit" href="/profile/edit-profile">Edit Profile</a>
         </div>

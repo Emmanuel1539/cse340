@@ -49,7 +49,7 @@ async function updateProfile(account_id, profile_image, profile_bio, profile_lin
     const values = [profile_image, profile_bio, profile_links, account_id]
     
     const result = await pool.query(query, values)
-    console.log(result)
+    // console.log(result)
     return result.rows[0]
     
     } catch (error) {

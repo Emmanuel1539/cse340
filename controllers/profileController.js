@@ -11,6 +11,7 @@ profileCont.buildProfileView = async function (req, res, next) {
 
   try {
     const profileData = await profileModel.getProfileByAccountId(accountId)
+    console.log(profileData)
     const profileHTML = utilities.buildProfileView(profileData)
     const nav = await utilities.getNav()
 
@@ -48,9 +49,9 @@ profileCont.addProfileData = async function (req, res, next) {
       throw new Error('Unable to add profile data')
     }
   } catch (error) {
-    console.log('Error adding data to the database', error)
-    res.status(500).send('Error retrieving profile')
-
+    console.error('Error updating profile:', error);
+    req.flash('error', 'An error occurred while updating your profile.');
+    res.redirect(`/profile/${account_id}`);
   }
 }
 
@@ -61,6 +62,9 @@ profileCont.editProfile = async (req, res) => {
     const { profile_image, profile_bio, profile_links } = req.body;
     const account_id = req.body.account_id;
 
+    const accountData = res.locals.accountData
+    let accountTool = await utilities.getAccountTool(accountData)
+
     // Parse the JSON string for social links safely
     let socialLinks;
     try {
@@ -70,6 +74,8 @@ profileCont.editProfile = async (req, res) => {
       return res.render('profile/edit-profile', {
         title: 'Update Profile',
         nav,
+        accountTool,
+        account_id,
         profile_image,
         profile_bio,
         profile_links,
@@ -77,13 +83,28 @@ profileCont.editProfile = async (req, res) => {
       });
     }
 
-    // Update the profile
-    const profile = await profileModel.updateProfile(
-      account_id,
-      profile_image,
-      profile_bio,
-      socialLinks
-    );
+    const itemData = await profileModel.getProfileByAccountId(accountData.account_id);
+    let profile = null;
+    if (itemData != null) {
+      // Update the profile
+      console.log(account_id)
+      console.log(profile_image)
+      console.log(profile_bio)
+      console.log(socialLinks)
+      profile = await profileModel.updateProfile(
+        account_id,
+        profile_image,
+        profile_bio,
+        socialLinks
+      );
+    } else {
+      profile = await profileModel.createProfile(
+        account_id, 
+        profile_image, 
+        profile_bio, 
+        socialLinks
+      );
+    }
 
     if (profile) {
       req.flash('notice', 'Your profile has been successfully updated.');
@@ -93,7 +114,8 @@ profileCont.editProfile = async (req, res) => {
       res.render('profile/edit-profile', { // Corrected path to render
         title: 'Update Profile',
         nav,
-
+        accountTool,
+        account_id,
         profile_image,
         profile_bio,
         profile_links,
@@ -104,9 +126,12 @@ profileCont.editProfile = async (req, res) => {
   } catch (error) {
     console.error('Error updating profile:', error);
     req.flash('error', 'An error occurred while updating your profile.');
-    res.status(500).send('Error updating profile');
+    res.redirect(`/profile/${account_id}`);
   }
 };
+
+
+
 
 
 profileCont.showEditProfileView = async (req, res, next) => {
